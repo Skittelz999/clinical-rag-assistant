@@ -1,6 +1,5 @@
 from fastapi import APIRouter, File, HTTPException, UploadFile, status
 
-from app.api.v1.deps import CurrentUser
 from app.schemas.document import DocumentChunksResponse, DocumentResponse
 from app.services.document_service import (
     DocumentNotFoundError,
@@ -20,7 +19,6 @@ router = APIRouter()
     status_code=status.HTTP_201_CREATED,
 )
 async def upload_document(
-    current_user: CurrentUser,
     file: UploadFile | None = File(default=None),
 ) -> DocumentResponse:
     try:
@@ -45,12 +43,12 @@ async def upload_document(
 
 
 @router.get("", response_model=list[DocumentResponse])
-async def list_documents(current_user: CurrentUser) -> list[DocumentResponse]:
+async def list_documents() -> list[DocumentResponse]:
     return await document_service.list_documents()
 
 
 @router.get("/{document_id}", response_model=DocumentResponse)
-async def get_document(current_user: CurrentUser, document_id: str) -> DocumentResponse:
+async def get_document(document_id: str) -> DocumentResponse:
     try:
         return await document_service.get_document(document_id)
     except DocumentNotFoundError as exc:
@@ -59,7 +57,6 @@ async def get_document(current_user: CurrentUser, document_id: str) -> DocumentR
 
 @router.get("/{document_id}/chunks", response_model=DocumentChunksResponse)
 async def list_document_chunks(
-    current_user: CurrentUser,
     document_id: str,
 ) -> DocumentChunksResponse:
     try:

@@ -1,0 +1,97 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R 7 0 R 9 0 R 11 0 R] /Count 4 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Length 447 >>
+stream
+BT /F1 11 Tf 72 740 Td
+(Synthetic Demo Clinical Guideline) Tj
+0 -18 Td
+(Demo only. This document is synthetic and is not medical advice.) Tj
+0 -18 Td
+(It contains no real patient data and must not be used for clinical care.) Tj
+0 -18 Td
+(This demo guideline describes a fictional adult outpatient condition called Condition G.) Tj
+0 -18 Td
+(It is designed only to test upload, extraction, semantic retrieval, and grounded answer generation.) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Length 676 >>
+stream
+BT /F1 11 Tf 72 740 Td
+(First-Line Management Pathway) Tj
+0 -18 Td
+(For Condition G, the first-line management pathway is lifestyle counseling, medication reconciliation, baseline laboratory review, and shared decision-making with a licensed clinician.) Tj
+0 -18 Td
+(The guideline recommends non-urgent outpatient management when the person is clinically stable and has no emergency warning signs.) Tj
+0 -18 Td
+(Routine follow-up should occur within four to six weeks in this synthetic scenario.) Tj
+0 -18 Td
+(Follow-up includes symptom review, medication tolerance review, laboratory trend review, and confirmation that the person understands when to seek urgent care.) Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 6 0 R >>
+endobj
+8 0 obj
+<< /Length 378 >>
+stream
+BT /F1 11 Tf 72 740 Td
+(Contraindications) Tj
+0 -18 Td
+(The synthetic guideline says MetaboLite-A should not be used when the person has a known severe allergy to MetaboLite-A.) Tj
+0 -18 Td
+(MetaboLite-A should also not be used with unstable vital signs, suspected acute organ failure, pregnancy without specialist review, or a conflicting clinician-documented care plan.) Tj
+ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 8 0 R >>
+endobj
+10 0 obj
+<< /Length 386 >>
+stream
+BT /F1 11 Tf 72 740 Td
+(Emergency Warning Signs) Tj
+0 -18 Td
+(Emergency warning signs that require urgent escalation include chest pain, severe shortness of breath, fainting, confusion, signs of stroke, severe dehydration, or rapidly worsening symptoms.) Tj
+0 -18 Td
+(The guideline says these warning signs require urgent medical evaluation and should override routine follow-up.) Tj
+ET
+endstream
+endobj
+11 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 10 0 R >>
+endobj
+xref
+0 12
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000134 00000 n 
+0000000204 00000 n 
+0000000702 00000 n 
+0000000828 00000 n 
+0000001555 00000 n 
+0000001681 00000 n 
+0000002110 00000 n 
+0000002236 00000 n 
+0000002674 00000 n 
+trailer
+<< /Size 12 /Root 1 0 R >>
+startxref
+2802
+%%EOF

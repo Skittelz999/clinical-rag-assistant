@@ -5,6 +5,10 @@ Thumbs.db
 # Environment
 .env
 .env.*
+backend/.env
+backend/.env.*
+frontend/.env
+frontend/.env.*
 !.env.example
 
 # Python
@@ -18,13 +22,17 @@ venv/
 dist/
 build/
 *.egg-info/
+.coverage
+htmlcov/
 
 # Node
 node_modules/
+frontend/node_modules/
 npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*
 frontend/dist/
+frontend/build/
 *.tsbuildinfo
 
 # Data / local uploads
@@ -32,10 +40,17 @@ backend/storage/uploads/*
 !backend/storage/uploads/.gitkeep
 backend/storage/processed/*
 !backend/storage/processed/.gitkeep
-runtime/uploads/*
-!runtime/uploads/.gitkeep
+storage/uploads/
+runtime/
+tmp/
+*.tmp
+*.log
+*.pid
 data/local/*
 !data/local/.gitkeep
+*.db
+*.sqlite
+*.sqlite3
 
 # IDE
 .vscode/

@@ -4,11 +4,11 @@ This portfolio project must avoid real patient data.
 
 ## Demo-safe rules
 
-- Use fictional patient cases only.
-- Use public medical guidelines or synthetic PDFs only.
+- Use synthetic PDFs only for the portfolio demo.
 - Add a visible disclaimer in the UI.
-- Log document and chunk IDs, not sensitive free-text content.
-- Keep role-based access enforcement in backend services, not only frontend views.
+- Do not upload real patient data or private clinical material.
+- Keep `.env` files out of Git and publish only placeholder values in `.env.example`.
+- Treat uploaded PDFs as runtime data, not repository content.
 
 ## Future production concerns
 

@@ -7,7 +7,6 @@ dependencies = [
   "fastapi>=0.115.0",
   "uvicorn[standard]>=0.30.0",
   "pydantic-settings>=2.4.0",
-  "email-validator>=2.2.0",
   "sqlalchemy[asyncio]>=2.0.0",
   "asyncpg>=0.29.0",
   "alembic>=1.13.0",
@@ -15,8 +14,6 @@ dependencies = [
   "python-multipart>=0.0.9",
   "pypdf>=4.3.0",
   "openai>=1.40.0",
-  "python-jose[cryptography]>=3.3.0",
-  "passlib[bcrypt]>=1.7.4",
 ]
 
 [project.optional-dependencies]
@@ -35,6 +32,7 @@ src = ["src", "tests"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+pythonpath = ["src"]
 
 [build-system]
 requires = ["setuptools>=69.0"]

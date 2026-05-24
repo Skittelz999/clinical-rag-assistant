@@ -1,69 +1,53 @@
 # Clinical RAG Assistant
 
-Portfolio-ready HealthTech AI SaaS MVP for uploading clinical guideline PDFs, embedding document chunks with pgvector, asking grounded questions, and reviewing answer source cards.
+Portfolio-ready HealthTech AI SaaS demo for uploading synthetic clinical guideline PDFs, embedding document chunks with pgvector, asking grounded questions, and reviewing source cards.
 
 > **Safety disclaimer:** Demo only. Not for medical use. This is not a medical device, diagnostic system, triage tool, or treatment recommendation engine. Do not upload real patient data.
 
-## Short Pitch
+## Portfolio Pitch
 
-Clinical teams need AI interfaces that can show where answers came from. This project demonstrates a source-grounded retrieval-augmented generation workflow: upload safe guideline documents, process them into searchable chunks, retrieve relevant evidence, and generate concise answers with visible sources.
+Clinical RAG Assistant demonstrates the core workflow behind a responsible clinical knowledge assistant: ingest a safe guideline PDF, split it into auditable chunks, retrieve relevant evidence with vector search, and generate a concise answer that shows exactly which sources were used.
 
-The product surface is intentionally simple:
+The app is intentionally scoped as a portfolio/demo SaaS MVP. It focuses on document-grounded answers, transparent citations, deterministic offline demos, and a clean path to OpenAI-backed retrieval and generation.
 
-- **Home:** product overview and guided demo entry point
-- **Documents:** upload PDFs, inspect processing, chunks, embeddings, and semantic search
-- **Chat:** primary end-user RAG interface for questions and source-grounded answers
+## Features
 
-## Screenshots
-
-Add screenshots before publishing the portfolio repo:
-
-- `docs/screenshots/home.png` - Home page overview
-- `docs/screenshots/documents.png` - PDF upload and knowledge-base status
-- `docs/screenshots/chat-answer-sources.png` - Chat answer with source cards
-
-Suggested capture flow:
-
-1. Start the app with Docker Compose.
-2. Upload the synthetic demo PDF.
-3. Ask an example question in Chat.
-4. Capture the answer and source cards.
-
-## Why This Project Matters
-
-This MVP focuses on the parts that matter for responsible clinical knowledge workflows:
-
-- **Grounded AI:** answers are built from retrieved document chunks, not free-form model memory.
-- **Retrieval-augmented generation:** pgvector similarity search finds relevant evidence before answer generation.
-- **Source transparency:** every answer can show source cards with document name, page, chunk, similarity, and preview text.
-- **Safe workflow boundaries:** the UI and prompts keep demo-only disclaimers visible and avoid patient-specific clinical advice.
-- **Maintainable architecture:** document processing, embeddings, retrieval, and RAG are separated into service/repository layers.
+- Home page that explains the product and demo flow
+- Documents page for PDF upload, document status, chunk inspection, embeddings, semantic search, and debug-style document Q&A
+- Chat page as the main end-user RAG interface
+- PDF extraction with page metadata
+- Page-scoped chunking and PostgreSQL persistence
+- Alembic-managed schema migrations
+- pgvector embeddings and semantic retrieval
+- RAG answers with source cards
+- Deterministic demo mode with no external API calls
+- OpenAI mode for realistic embeddings and answer generation
+- Visible demo-only medical safety disclaimer
 
 ## Tech Stack
 
 - **Frontend:** Vue 3, TypeScript, Vite, Tailwind CSS, Pinia
-- **Backend:** FastAPI, Python, SQLAlchemy async, Alembic
-- **Database:** PostgreSQL with pgvector
-- **AI:** OpenAI-compatible embedding and LLM provider abstractions
-- **Local demo:** deterministic fake providers for stable tests and offline demos
-- **Infra:** Docker Compose
-- **Quality:** pytest, ruff, TypeScript typecheck, production frontend build
+- **Backend:** FastAPI, Python 3.12, SQLAlchemy async, Alembic
+- **Database:** PostgreSQL 16 with pgvector
+- **AI:** deterministic local providers or OpenAI-compatible providers
+- **Local infra:** Docker Compose
+- **Quality:** pytest, ruff, vue-tsc, Vite production build
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-  Home["Home / Demo Flow"] --> Documents["Documents Page"]
+  Home["Home"] --> Documents["Documents"]
   Documents --> Upload["PDF Upload API"]
   Upload --> Extract["PDF Text Extraction"]
-  Extract --> Chunk["Page-Level Chunking"]
+  Extract --> Chunk["Page Chunking"]
   Chunk --> Embed["Embedding Service"]
   Embed --> DB[("PostgreSQL + pgvector")]
-  Chat["Chat Page"] --> RAG["RAG Answer API"]
+  Chat["Chat"] --> RAG["RAG Answer API"]
   RAG --> Retrieve["Semantic Retrieval"]
   Retrieve --> QueryEmbed["Query Embedding"]
   QueryEmbed --> DB
-  Retrieve --> Context["Clean Context Builder"]
+  Retrieve --> Context["Context Cleaner"]
   Context --> LLM["LLM Provider"]
   LLM --> Sources["Answer + Source Cards"]
   Sources --> Chat
@@ -72,151 +56,42 @@ flowchart LR
 ## RAG Pipeline
 
 1. Upload a synthetic guideline PDF.
-2. Validate the file and store it under runtime storage.
+2. Validate the upload and store it as runtime data.
 3. Extract text per page with `pypdf`.
-4. Chunk page text while preserving page numbers.
+4. Split page text into stable chunks while preserving page numbers.
 5. Persist document and chunk metadata in PostgreSQL.
-6. Generate and store pgvector embeddings for each chunk.
-7. Embed the user query with the same provider family.
-8. Retrieve nearest ready, embedded chunks with pgvector cosine distance.
+6. Generate embeddings and store them as pgvector vectors.
+7. Embed the user question with the same provider family.
+8. Retrieve nearest ready, embedded chunks with cosine distance.
 9. Clean and deduplicate context before prompting.
-10. Generate a concise answer from retrieved context only.
-11. Return answer metadata and source cards.
+10. Generate an answer from retrieved context only.
+11. Return the answer, retrieval metadata, and source cards.
 
-## Current MVP Status
+## Screenshots
 
-Implemented:
+Screenshot assets:
 
-- polished Home page for portfolio/demo presentation
-- PDF upload with validation
-- PDF text extraction and page-level chunking
-- PostgreSQL persistence for documents and chunks
-- Alembic migrations
-- pgvector embeddings for stored chunks
-- semantic retrieval over embedded chunks
-- primary Chat page using `POST /api/v1/rag/answer`
-- grounded answer generation with source cards
-- deterministic demo mode for tests/local review
-- OpenAI mode for real embeddings and answer generation
+![Home page](docs/assets/screenshots/home-page.png)
 
-Not implemented:
+![Documents upload](docs/assets/screenshots/documents-upload.png)
 
-- authentication or roles
-- patient records
-- OCR for scanned PDFs
-- streaming responses
-- BM25 or hybrid search
-- advanced reranking
-- database conversation history
-- production deployment hardening
+![Document ready](docs/assets/screenshots/document-ready.png)
 
-## Setup
+![Chat answer with sources](docs/assets/screenshots/chat-answer-with-sources.png)
 
-```bash
-cp .env.example .env
-docker compose up --build
-```
-
-App URLs:
-
-- Home: http://localhost:5173
-- Chat: http://localhost:5173/chat
-- Documents: http://localhost:5173/documents
-- Backend API: http://localhost:8000
-- API docs: http://localhost:8000/docs
-
-## Environment Variables
-
-Key settings in `.env`:
-
-```env
-DATABASE_URL=postgresql+asyncpg://clinical_app:clinical_app_password@db:5432/clinical_rag
-EMBEDDING_PROVIDER=deterministic
-LLM_PROVIDER=deterministic
-OPENAI_API_KEY=replace-me
-OPENAI_EMBEDDING_MODEL=text-embedding-3-small
-OPENAI_CHAT_MODEL=gpt-4.1-mini
-MAX_UPLOAD_MB=10
-VITE_API_BASE_URL=http://localhost:8000/api/v1
-```
-
-## Deterministic Demo Mode
-
-Use deterministic providers for local demos, tests, and GitHub reviewers:
-
-```env
-EMBEDDING_PROVIDER=deterministic
-LLM_PROVIDER=deterministic
-OPENAI_API_KEY=replace-me
-```
-
-This mode makes no external API calls. It is stable and useful for demonstration, but it does not represent real semantic quality.
-
-## OpenAI Mode
-
-Use OpenAI-compatible providers for realistic embeddings and answer generation:
-
-```env
-EMBEDDING_PROVIDER=openai
-LLM_PROVIDER=openai
-OPENAI_API_KEY=your-key
-OPENAI_EMBEDDING_MODEL=text-embedding-3-small
-OPENAI_CHAT_MODEL=gpt-4.1-mini
-```
-
-Automated tests use fake providers and do not call external APIs.
-
-## Database Migrations
-
-Alembic owns the database schema. The FastAPI app does not call `create_all`.
-
-Run migrations locally from the backend folder:
-
-```bash
-cd backend
-alembic upgrade head
-```
-
-Docker Compose runs migrations before starting the backend:
-
-```bash
-docker compose up --build
-```
-
-Reset local development data:
-
-```bash
-docker compose down -v
-```
-
-This removes the PostgreSQL volume. Runtime uploads under `backend/storage/uploads` can be cleared separately.
-
-## Demo Data
-
-A safe synthetic guideline is included:
-
-- `demo-data/sample-clinical-guideline.md`
-
-Export or print it to PDF before uploading. Do not upload real patient data.
-
-Example questions:
-
-- What is the first-line management pathway for Condition G?
-- What emergency warning signs require urgent escalation?
-- When should follow-up happen?
-- What are the contraindications for MetaboLite-A?
+See `docs/screenshots.md` for the exact capture flow.
 
 ## Demo Flow
 
-1. Start Docker:
+1. Start the app:
 
    ```bash
-   docker compose up --build
+   docker compose up --build -d
    ```
 
-2. Open http://localhost:5173.
+2. Open `http://localhost:5173/`.
 3. Go to Documents.
-4. Upload a synthetic guideline PDF.
+4. Upload `demo-data/synthetic-clinical-guideline.pdf`.
 5. Confirm the document becomes `Ready` and embeddings become `Embedded`.
 6. Go to Chat.
 7. Ask: `What is the first-line management pathway for Condition G?`
@@ -224,58 +99,147 @@ Example questions:
 9. Ask: `What emergency warning signs require urgent escalation?`
 10. Confirm the answer is grounded and readable.
 
-## API Highlights
+## Example Questions
 
-Upload:
+- What is the first-line management pathway for Condition G?
+- What emergency warning signs require urgent escalation?
+- When should follow-up happen?
+- What are the contraindications for MetaboLite-A?
 
-```http
-POST /api/v1/documents/upload
-```
+## Local Docker Setup
 
-List documents:
-
-```http
-GET /api/v1/documents
-```
-
-Semantic retrieval:
-
-```http
-POST /api/v1/retrieval/search
-```
-
-Grounded answer generation:
-
-```http
-POST /api/v1/rag/answer
-```
-
-## Tests
-
-Backend:
+Create a local environment file:
 
 ```bash
+cp .env.example .env
+```
+
+Start the app:
+
+```bash
+docker compose up --build -d
+```
+
+Open:
+
+- Home: `http://localhost:5173`
+- Documents: `http://localhost:5173/documents`
+- Chat: `http://localhost:5173/chat`
+- Backend API: `http://localhost:8000`
+- API docs: `http://localhost:8000/docs`
+
+Stop the app:
+
+```bash
+docker compose down
+```
+
+Reset the local database:
+
+```bash
+docker compose down -v
+```
+
+This removes the PostgreSQL Docker volume. Uploaded PDFs are runtime files under `backend/storage/uploads` and are ignored by Git.
+
+## Deterministic Mode
+
+Deterministic mode is the default for local demos and GitHub review:
+
+```env
+EMBEDDING_PROVIDER=deterministic
+LLM_PROVIDER=deterministic
+OPENAI_API_KEY=replace-me
+```
+
+This mode makes no external API calls. It is stable and useful for demos, but it is not a realistic measure of semantic retrieval quality.
+
+## OpenAI Mode
+
+To use OpenAI-backed embeddings and answer generation, update your local `.env`:
+
+```env
+EMBEDDING_PROVIDER=openai
+LLM_PROVIDER=openai
+OPENAI_API_KEY=your-openai-api-key
+OPENAI_EMBEDDING_MODEL=text-embedding-3-small
+OPENAI_CHAT_MODEL=gpt-4.1-mini
+```
+
+Never commit `.env` or real API keys. Automated tests use fake providers and do not call external APIs.
+
+## Developer Commands
+
+Direct commands:
+
+```bash
+# Start / stop / reset
+docker compose up --build -d
+docker compose down
+docker compose down -v
+
+# Backend
 cd backend
 python -m pytest
 python -m ruff check src tests
-```
 
-Frontend:
-
-```bash
+# Frontend
 cd frontend
 npm run typecheck
 npm run build
 ```
 
+Makefile shortcuts:
+
+```bash
+make start-detached
+make stop
+make reset-db
+make backend-test
+make backend-lint
+make frontend-typecheck
+make frontend-build
+make lint
+```
+
+`make lint` runs backend ruff plus frontend typecheck. No separate frontend ESLint setup is configured.
+
+## Project Structure
+
+```text
+clinical-rag-assistant/
+  backend/                  FastAPI API, services, repositories, migrations, tests
+  frontend/                 Vue 3 + TypeScript app
+  demo-data/                Synthetic demo guideline source and PDF
+  docs/                     Architecture, demo, screenshots, safety notes
+  infra/db/                 PostgreSQL initialization
+  docker-compose.yml        Local app, API, and pgvector database
+```
+
+## Deployment Readiness
+
+A production-like deployment would need:
+
+- hosted PostgreSQL with pgvector enabled
+- backend service capable of running FastAPI and Alembic migrations
+- frontend static hosting for the Vite build output
+- environment variables for database URL, CORS origins, provider selection, model names, upload size limits, and runtime settings
+- OpenAI API key or another compatible provider credential for non-deterministic mode
+- persistent file storage for uploaded PDFs instead of local container storage
+- HTTPS, monitoring, logging, backup/restore, rate limits, and access controls
+
+This repository does not include provider-specific cloud deployment code yet.
+
 ## Known Limitations
 
-- Scanned PDFs are not supported because OCR is out of scope.
-- Deterministic providers are demo-only and not semantically meaningful.
-- Answers depend on retrieval quality and uploaded document content.
-- There is no authentication, authorization, tenant isolation, or audit-grade access control.
-- There is no clinical validation, monitoring, or production deployment hardening.
-- This project must not be used with real patient data.
+- Demo only; not clinically validated.
+- No authentication, authorization, tenant isolation, or patient records.
+- No OCR for scanned PDFs.
+- No streaming responses.
+- No BM25, hybrid search, reranking, or evaluation harness.
+- No database-backed chat history.
+- Uploaded files are local runtime data in the Docker setup.
+- Deterministic providers are offline-demo utilities, not production AI quality.
 
 ## Future Improvements
 
@@ -287,5 +251,12 @@ npm run build
 - OCR for scanned PDFs
 - Streamed chat responses
 - Database-backed conversation history
-- Evaluation harness for retrieval and answer faithfulness
-- Deployment configuration and observability
+- Retrieval and faithfulness evaluation harness
+- Provider-neutral deployment templates and observability
+
+## Repository Safety
+
+- `.env`, backend/frontend env files, uploads, caches, builds, `node_modules`, local databases, and runtime files are ignored.
+- `.env.example` contains placeholder/local-demo values only.
+- The included guideline is synthetic and clearly marked as demo data.
+- Do not commit real API keys, credentials, private PDFs, patient records, or generated runtime uploads.

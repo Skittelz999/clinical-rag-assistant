@@ -9,7 +9,7 @@ PDF upload -> extract text -> clean text -> chunk -> embed -> store chunks + vec
 ## Question answering pipeline
 
 ```text
-question -> retrieve chunks -> build grounded prompt -> generate answer -> validate citations -> return response
+question -> retrieve chunks -> clean context -> build grounded prompt -> generate answer -> return answer with source cards
 ```
 
 ## Grounding rules
@@ -17,7 +17,6 @@ question -> retrieve chunks -> build grounded prompt -> generate answer -> valid
 The assistant should:
 
 - answer only from retrieved document chunks
-- cite every factual claim
+- show source cards for grounded answers
 - refuse when evidence is insufficient
-- separate clinical facts from generated summaries
 - never claim to diagnose or replace professional judgement
