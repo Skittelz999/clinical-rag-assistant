@@ -71,13 +71,17 @@ flowchart LR
 
 Screenshot assets:
 
-![Home page](docs/assets/screenshots/home-page.png)
+### Home page
+![Home page](docs/assets/home-page.png)
 
-![Documents upload](docs/assets/screenshots/documents-upload.png)
+### Documents upload and processing
+![Documents upload](docs/assets/documents-upload.png)
 
-![Document ready](docs/assets/screenshots/document-ready.png)
+### Document ready with embeddings
+![Document ready](docs/assets/document-ready.png)
 
-![Chat answer with sources](docs/assets/screenshots/chat-answer-with-sources.png)
+### Chat answer with sources
+![Chat answer with sources](docs/assets/chat-answer-with-sources.png)
 
 See `docs/screenshots.md` for the exact capture flow.
 
