@@ -1,0 +1,42 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+dist/
+build/
+*.egg-info/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+frontend/dist/
+*.tsbuildinfo
+
+# Data / local uploads
+backend/storage/uploads/*
+!backend/storage/uploads/.gitkeep
+backend/storage/processed/*
+!backend/storage/processed/.gitkeep
+runtime/uploads/*
+!runtime/uploads/.gitkeep
+data/local/*
+!data/local/.gitkeep
+
+# IDE
+.vscode/
+.idea/
